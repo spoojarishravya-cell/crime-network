@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CrimeGraph AI</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                CG
+            </div>
+
+            <div>
+                <h2>CrimeGraph</h2>
+                <p>AI Intelligence</p>
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <button class="nav-item active">
+                <span>⌂</span>
+                Dashboard
+            </button>
+
+            <button class="nav-item">
+                <span>◈</span>
+                Investigations
+            </button>
+
+            <button class="nav-item">
+                <span>◎</span>
+                Network Analysis
+            </button>
+
+            <button class="nav-item">
+                <span>⚠</span>
+                Alerts
+            </button>
+
+        </nav>
+
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            Backend System Online
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <header class="top-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    INVESTIGATOR CONSOLE
+                </p>
+
+                <h1>
+                    Investigation Dashboard
+                </h1>
+
+            </div>
+
+
+            <div class="profile">
+
+                <div class="profile-avatar">
+                    IN
+                </div>
+
+                <div>
+
+                    <strong>
+                        Investigator
+                    </strong>
+
+                    <small>
+                        Intelligence Analyst
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- STATISTICS -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <p>ACTIVE CASES</p>
+
+                <h2 id="activeCases">
+                    12
+                </h2>
+
+                <span>
+                    Current investigations
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <p>ENTITIES ANALYZED</p>
+
+                <h2 id="entityCount">
+                    0
+                </h2>
+
+                <span>
+                    People, places & objects
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <p>RELATIONSHIPS</p>
+
+                <h2 id="relationshipCount">
+                    0
+                </h2>
+
+                <span>
+                    Detected connections
+                </span>
+
+            </div>
+
+
+            <div class="stat-card alert-card">
+
+                <p>ALERTS</p>
+
+                <h2>
+                    8
+                </h2>
+
+                <span>
+                    Require investigation
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- INVESTIGATION INPUT -->
+
+        <section class="panel">
+            <!-- FILE UPLOAD -->
+
+<div class="upload-box">
+
+    <div class="upload-icon">
+        📄
+    </div>
+
+    <div class="upload-content">
+
+        <h3>
+            Upload Investigation File
+        </h3>
+
+        <p>
+            Upload FIR, PDF or TXT files.
+            CrimeGraph AI will extract the
+            investigation information automatically.
+        </p>
+
+        <input
+            type="file"
+            id="fileInput"
+            accept=".pdf,.txt,.fir"
+        >
+
+        <button
+            class="upload-button"
+            onclick="uploadInvestigationFile()">
+
+            Upload & Analyze
+
+        </button>
+
+        <div
+            id="selectedFile"
+            class="selected-file">
+        </div>
+
+    </div>
+
+</div>
+
+            <div class="panel-header">
+
+                <div>
+
+                    <p class="eyebrow">
+                        NEW INVESTIGATION
+                    </p>
+
+                    <h2>
+                        Analyze Crime Intelligence
+                    </h2>
+
+                </div>
+
+
+                <button
+                    class="secondary-button"
+                    onclick="loadDemoData()">
+
+                    Load Demo Data
+
+                </button>
+
+            </div>
+
+
+
+            <!-- CASE NAME -->
+
+            <div class="input-group">
+
+                <label>
+                    Investigation Name
+                </label>
+
+                <input
+                    id="caseName"
+                    type="text"
+                    placeholder="Example: Organized Theft Investigation">
+
+            </div>
+
+
+
+            <!-- REPORT -->
+
+            <div class="input-group">
+
+                <label>
+                    Investigation Report
+                </label>
+
+                <textarea
+                    id="reportText"
+                    placeholder="Paste FIR, surveillance report, intelligence report or other investigation information here..."></textarea>
+
+            </div>
+
+
+
+            <div class="action-row">
+
+                <p>
+                    The system will identify people, locations, vehicles,
+                    phone numbers and relationships.
+                </p>
+
+
+                <button
+                    class="analyze-button"
+                    onclick="analyzeInvestigation()">
+
+                    Analyze Investigation →
+
+                </button>
+
+            </div>
+
+
+            <div
+                id="loading"
+                class="loading hidden">
+
+                🤖 AI is analyzing the investigation...
+
+            </div>
+
+
+            <div
+                id="errorMessage"
+                class="error hidden">
+            </div>
+
+        </section>
+
+
+
+        <!-- RESULTS -->
+
+        <section
+            id="resultsSection"
+            class="hidden">
+
+<!-- AI INVESTIGATION SUMMARY -->
+
+<div class="panel ai-summary-panel">
+
+    <div class="panel-header">
+
+        <div>
+
+            <span class="section-label">
+                AI ANALYSIS
+            </span>
+
+            <h2>
+                Investigation Summary
+            </h2>
+
+        </div>
+
+        <div class="ai-status">
+            ● ANALYZED
+        </div>
+
+    </div>
+
+<!-- KEY INDIVIDUAL -->
+<div class="key-individual-box">
+    <span class="section-label">NETWORK INTELLIGENCE</span>
+
+    <h3>⭐ Potential Key Individual</h3>
+
+    <p id="keyIndividualName">
+        No key individual detected yet.
+    </p>
+
+    <p id="keyIndividualDetails">
+        Upload and analyze an investigation file to identify the most connected person.
+    </p>
+</div>
+<!-- PATTERN ANALYSIS -->
+<div class="pattern-analysis-box">
+
+    <span class="section-label">RISK INTELLIGENCE</span>
+
+    <h3>🚨 Suspicious Patterns</h3>
+
+    <div id="patternAnalysis">
+        <p>No suspicious patterns detected yet.</p>
+    </div>
+
+</div>
+    <!-- STATISTICS -->
+
+    <div class="summary-stats">
+
+        <div class="summary-stat">
+
+            <span class="stat-number"
+                  id="summaryPeople">
+                0
+            </span>
+
+            <span class="stat-label">
+                People
+            </span>
+
+        </div>
+
+
+        <div class="summary-stat">
+
+            <span class="stat-number"
+                  id="summaryLocations">
+                0
+            </span>
+
+            <span class="stat-label">
+                Locations
+            </span>
+
+        </div>
+
+
+        <div class="summary-stat">
+
+            <span class="stat-number"
+                  id="summaryVehicles">
+                0
+            </span>
+
+            <span class="stat-label">
+                Vehicles
+            </span>
+
+        </div>
+
+
+        <div class="summary-stat">
+
+            <span class="stat-number"
+                  id="summaryPhones">
+                0
+            </span>
+
+            <span class="stat-label">
+                Phone Numbers
+            </span>
+
+        </div>
+
+
+        <div class="summary-stat">
+
+            <span class="stat-number"
+                  id="summaryRelationships">
+                0
+            </span>
+
+            <span class="stat-label">
+                Relationships
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN AI INSIGHT -->
+
+    <div class="ai-insight-box">
+
+        <div class="insight-icon">
+            🧠
+        </div>
+
+        <div>
+
+            <h3>
+                Network Intelligence
+            </h3>
+
+            <p id="mainAIInsight">
+                Analyze an investigation to
+                generate AI-powered insights.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>         
+            <!-- ENTITIES + INSIGHTS -->
+
+            <div class="two-column">
+
+
+                <!-- ENTITIES -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <p class="eyebrow">
+                                ENTITY EXTRACTION
+                            </p>
+
+                            <h2>
+                                Detected Entities
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="entityList"
+                        class="entity-list">
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- INSIGHTS -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <p class="eyebrow">
+                                AI ANALYSIS
+                            </p>
+
+                            <h2>
+                                Investigation Insights
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="insightList"
+                        class="insight-list">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- NETWORK -->
+
+            <div class="panel network-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            RELATIONSHIP ANALYSIS
+                        </p>
+
+                        <h2>
+                            Criminal Network
+                        </h2>
+
+                    </div>
+
+
+                    <span
+                        id="networkCount"
+                        class="network-count">
+
+                        0 relationships
+
+                    </span>
+
+                </div>
+
+
+                <div class="network-container">
+
+                    <canvas
+                        id="networkCanvas">
+
+                    </canvas>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RELATIONSHIPS -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            DETECTED CONNECTIONS
+                        </p>
+
+                        <h2>
+                            Relationships
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="relationshipList"
+                    class="relationship-list">
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
