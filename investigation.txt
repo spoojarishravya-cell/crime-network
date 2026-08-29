@@ -1,0 +1,14 @@
+Investigation Report
+
+Person: John Smith
+Person: Michael Brown
+
+Location: New York
+Location: Brooklyn
+
+Vehicle: Toyota Camry
+Phone: 555-123-4567
+
+John Smith met Michael Brown in Brooklyn.
+Michael Brown was seen driving a Toyota Camry.
+John Smith contacted Michael Brown by phone.
